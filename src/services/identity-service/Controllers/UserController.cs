@@ -3,8 +3,8 @@ using identity_service.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+[Route("user/[action]")]
 [ApiController]
-[Route("api/user")]
 public class UserController : ControllerBase
 {
     private readonly UserService _userService;

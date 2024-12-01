@@ -1,17 +1,17 @@
 {
   "Routes": [
     {
-      "DownstreamPathTemplate": "/api/identity/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/user/{everything}",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "localhost", "Port": 6050 }
       ],
-      "UpstreamPathTemplate": "/identity/{everything}",
+      "UpstreamPathTemplate": "/identity/user/{everything}",
       "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ]
     },
     {
-      "DownstreamPathTemplate": "/api/content/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/content/{everything}",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "localhost", "Port": 5060 }
       ],
@@ -19,8 +19,8 @@
       "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ]
     },
     {
-      "DownstreamPathTemplate": "/api/payment/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/payment/{everything}",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "localhost", "Port": 5070 }
       ],
@@ -28,8 +28,8 @@
       "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ]
     },
     {
-      "DownstreamPathTemplate": "/api/social/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/social/{everything}",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "localhost", "Port": 5080 }
       ],
@@ -37,29 +37,25 @@
       "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ]
     },
     {
-      "DownstreamPathTemplate": "/api/mailing/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/mailing/{everything}",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-        { "Host": "localhost", "Port": 5100 }
+        { "Host": "localhost", "Port": 6100 }
       ],
       "UpstreamPathTemplate": "/mailing/{everything}",
       "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ]
     },
     {
-      "DownstreamPathTemplate": "/api/chat/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/chat/{everything}",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "localhost", "Port": 7070 }
       ],
       "UpstreamPathTemplate": "/chat/{everything}",
-      "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
+      "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ] 
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:5000"
+    "BaseUrl": "http://localhost:5000"
   }
 }

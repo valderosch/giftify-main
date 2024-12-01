@@ -12,10 +12,13 @@ namespace identity_service.Services;
 public class AuthService
 {
     private readonly UserRepository _userRepository;
-
-    public AuthService(UserRepository userRepository)
+    private readonly IConfiguration _configuration;
+    private readonly MailServiceClient _mailServiceClient;
+    public AuthService(UserRepository userRepository, IConfiguration configuration, MailServiceClient mailServiceClient)
     {
         _userRepository = userRepository;
+        _configuration = configuration;
+        _mailServiceClient = mailServiceClient;
     }
 
     public async Task<string> RegisterUserAsync(RegisterDto registerDto)
@@ -41,14 +44,40 @@ public class AuthService
         if (user == null || !VerifyPassword(loginDto.Password, user.PasswordHash))
             return null;
 
-        return "Login successful. Data is correct.";
+        return GenerateJwtToken(user);
+    }
+
+    private string GenerateJwtToken(User user)
+    {
+        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]));
+        var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+        
+        var claims = new[]
+        {
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.Email, user.Email),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(ClaimTypes.Role, "User")
+        };
+
+        
+        var tokenOptions = new JwtSecurityToken(
+            claims: claims,
+            expires: DateTime.UtcNow.AddMinutes(60), 
+            signingCredentials: signingCredentials
+        );
+
+        return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
     }
 
     public async Task<string> RequestPasswordResetAsync(PasswordResetRequestDto requestDto)
     {
         var user = await _userRepository.GetUserByEmailAsync(requestDto.Email);
         if (user == null) return "User not found.";
-        return "Password reset link sent to your email.";
+        
+        var emailSent = await _mailServiceClient.SendPasswordResetEmailAsync(requestDto);
+
+        return emailSent ? "Password reset link sent to your email." : "Failed to send email.";
     }
 
     public async Task<string> ResetPasswordAsync(ResetPasswordDto resetDto)
