@@ -9,7 +9,6 @@ builder.Services.AddOcelot();
 
 var app = builder.Build();
 
-// Приберіть використання аутентифікації
 // app.UseAuthentication();
 
 app.UseOcelot().Wait();
