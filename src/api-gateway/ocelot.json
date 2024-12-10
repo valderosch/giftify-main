@@ -31,7 +31,7 @@
       "DownstreamPathTemplate": "/social/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-        { "Host": "localhost", "Port": 5080 }
+        { "Host": "localhost", "Port": 6080 }
       ],
       "UpstreamPathTemplate": "/social/{everything}",
       "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ]
@@ -46,12 +46,12 @@
       "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ]
     },
     {
-      "DownstreamPathTemplate": "/chat/{everything}",
+      "DownstreamPathTemplate": "/chats/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "localhost", "Port": 7070 }
       ],
-      "UpstreamPathTemplate": "/chat/{everything}",
+      "UpstreamPathTemplate": "/chats/{everything}",
       "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ] 
     }
   ],
