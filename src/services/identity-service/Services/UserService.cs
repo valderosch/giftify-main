@@ -24,6 +24,21 @@ public class UserService
             LongDescription = user.LongDescription
         };
     }
+    
+    public async Task<UserProfileDto?> GetUserProfileByIdAsync(Guid id)
+    {
+        var user = await _userRepository.GetUserByIdAsync(id);
+        if (user == null) return null;
+
+        return new UserProfileDto
+        {
+            Id = user.Id,
+            Username = user.Username,
+            Email = user.Email,
+            ShortDescription = user.ShortDescription,
+            LongDescription = user.LongDescription
+        };
+    }
 
     public async Task<string> UpdateUserProfileAsync(string email, UpdateProfileDto updateDto)
     {

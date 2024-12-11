@@ -20,6 +20,13 @@ public class UserController : ControllerBase
         var userProfile = await _userService.GetUserProfileAsync(email);
         return userProfile != null ? Ok(userProfile) : NotFound("User not found.");
     }
+    
+    [HttpGet("profile/{id:guid}")]
+    public async Task<IActionResult> GetUserProfileById(Guid id)
+    {
+        var userProfile = await _userService.GetUserProfileByIdAsync(id);
+        return userProfile != null ? Ok(userProfile) : NotFound("User not found.");
+    }
 
     [HttpPut("profile")]
     public async Task<IActionResult> UpdateUserProfile(string email, UpdateProfileDto updateDto)

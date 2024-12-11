@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 
 [ApiController]
-[Route("api/auth")]
+[Route("user/[action]")]
 public class AuthController : ControllerBase
 {
     private readonly AuthService _authService;

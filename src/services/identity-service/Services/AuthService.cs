@@ -3,9 +3,11 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using identity_service.Dtos;
+using identity_service.Dtos.author;
 using identity_service.Models;
 using IdentityService.DTOs;
 using IdentityService.Repositories;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
 namespace identity_service.Services;
@@ -14,6 +16,7 @@ public class AuthService
     private readonly UserRepository _userRepository;
     private readonly IConfiguration _configuration;
     private readonly MailServiceClient _mailServiceClient;
+
     public AuthService(UserRepository userRepository, IConfiguration configuration, MailServiceClient mailServiceClient)
     {
         _userRepository = userRepository;
@@ -31,27 +34,49 @@ public class AuthService
             Username = registerDto.Username,
             Email = registerDto.Email,
             PasswordHash = HashPassword(registerDto.Password),
-            Roles = new List<Role> { new Role { Name = "User" } }
+            Roles = new List<Role> { new Role { Name = "User" } },
+            SocialLinks = new List<SocialLink>
+            {
+                new SocialLink
+                {
+                    Platform = "GitHub",
+                    Url = "https://github.com/valderosch"
+                }
+            },
+            ShortDescription = "I am a newbie"
         };
 
         await _userRepository.AddUserAsync(user);
         return "Registration successful. New user was created.";
     }
+    
 
-    public async Task<string?> LoginAsync(LoginDto loginDto)
+    public async Task<LoginResponseDto?> LoginAsync(LoginDto loginDto)
     {
         var user = await _userRepository.GetUserByEmailAsync(loginDto.Email);
         if (user == null || !VerifyPassword(loginDto.Password, user.PasswordHash))
             return null;
 
-        return GenerateJwtToken(user);
+        var token = GenerateJwtToken(user);
+        return new LoginResponseDto
+        {
+            Token = token,
+            User = new UserDto
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                ShortDescription = user.ShortDescription,
+                SocialLinks = user.SocialLinks
+            }
+        };
     }
 
     private string GenerateJwtToken(User user)
     {
         var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]));
         var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-        
+
         var claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
@@ -60,16 +85,15 @@ public class AuthService
             new Claim(ClaimTypes.Role, "User")
         };
 
-        
         var tokenOptions = new JwtSecurityToken(
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(60), 
+            expires: DateTime.UtcNow.AddMinutes(60),
             signingCredentials: signingCredentials
         );
 
         return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
     }
-
+    
     public async Task<string> RequestPasswordResetAsync(PasswordResetRequestDto requestDto)
     {
         var user = await _userRepository.GetUserByEmailAsync(requestDto.Email);
