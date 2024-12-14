@@ -6,4 +6,5 @@ public class CreateGoalDto
     public decimal TargetAmount { get; set; }
     public string Description { get; set; }
     public DateTime Deadline { get; set; }
+    public IFormFile? Image { get; set; }
 }

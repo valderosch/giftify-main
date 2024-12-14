@@ -40,6 +40,7 @@ public class PostService
         var post = _mapper.Map<Post>(createPostDto);
         post.AuthorId = userId;
         post.CreatedAt = DateTime.UtcNow;
+
         await _postRepository.AddPostAsync(post);
         return _mapper.Map<PostDto>(post);
     }

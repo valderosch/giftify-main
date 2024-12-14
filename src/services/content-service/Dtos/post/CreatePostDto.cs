@@ -4,6 +4,8 @@ public class CreatePostDto
 {
     public string Title { get; set; }
     public string Content { get; set; }
-    public List<int>? FileIds { get; set; } 
+    public List<int>? FileIds { get; set; }
     public bool IsPublic { get; set; }
+    public int PlanId { get; set; } 
+    public decimal Price { get; set; } 
 }

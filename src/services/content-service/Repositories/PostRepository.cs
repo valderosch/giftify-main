@@ -17,14 +17,16 @@ public class PostRepository
     public async Task<List<Post>> GetAllPostsAsync(Guid userId)
     {
         return await _context.Posts
-            .Where(p => p.AuthorId == userId) 
-            .OrderByDescending(p => p.CreatedAt) 
+            .Where(p => p.AuthorId == userId)
+            .OrderByDescending(p => p.CreatedAt)
             .ToListAsync();
     }
 
     public async Task<Post?> GetPostByIdAsync(int postId)
     {
-        return await _context.Posts.FirstOrDefaultAsync(p => p.Id == postId);
+        return await _context.Posts
+            .Include(p => p.FileAttachments) 
+            .FirstOrDefaultAsync(p => p.Id == postId);
     }
 
     public async Task AddPostAsync(Post post)

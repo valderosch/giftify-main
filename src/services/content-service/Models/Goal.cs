@@ -11,4 +11,6 @@ public class Goal
     public string Description { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime Deadline { get; set; }
+    public Guid AuthorId { get; set; } 
+    public string? ImagePath { get; set; }
 }

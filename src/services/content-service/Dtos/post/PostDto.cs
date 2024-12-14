@@ -8,6 +8,8 @@ public class PostDto
     public DateTime CreatedAt { get; set; }
     public bool IsPublic { get; set; }
     public int Likes { get; set; }
+    public int PlanId { get; set; } 
+    public decimal Price { get; set; } 
     public List<int>? FileIds { get; set; }
 }
 

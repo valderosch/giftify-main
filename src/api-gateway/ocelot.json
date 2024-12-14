@@ -13,7 +13,7 @@
       "DownstreamPathTemplate": "/content/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-        { "Host": "localhost", "Port": 5060 }
+        { "Host": "localhost", "Port": 6060 }
       ],
       "UpstreamPathTemplate": "/content/{everything}",
       "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ]
@@ -22,7 +22,7 @@
       "DownstreamPathTemplate": "/payment/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-        { "Host": "localhost", "Port": 5070 }
+        { "Host": "localhost", "Port": 6070 }
       ],
       "UpstreamPathTemplate": "/payment/{everything}",
       "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ]

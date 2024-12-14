@@ -13,6 +13,8 @@ public class Post
     public Guid AuthorId { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public bool IsPublic { get; set; }
+    public int PlanId { get; set; }
+    public decimal Price { get; set; }
     public int Likes { get; set; }
     public ICollection<FileAttachment> FileAttachments { get; set; } = new List<FileAttachment>();
 }

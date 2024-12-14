@@ -8,4 +8,5 @@ public class GoalDto
     public string Description { get; set; }
     public DateTime Deadline { get; set; }
     public decimal CollectedAmount { get; set; }
+    public string? ImagePath { get; set; }
 }

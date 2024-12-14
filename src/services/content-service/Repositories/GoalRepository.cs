@@ -12,15 +12,19 @@ public class GoalRepository
     {
         _context = context;
     }
+    public async Task<List<Goal>> GetAllGoalsAsync()
+    {
+        return await _context.Goals.ToListAsync();
+    }
 
     public async Task<Goal?> GetGoalByIdAsync(int id)
     {
         return await _context.Goals.FirstOrDefaultAsync(g => g.Id == id);
     }
 
-    public async Task<List<Goal>> GetAllGoalsAsync()
+    public async Task<List<Goal>> GetGoalsByAuthorAsync(Guid authorId)
     {
-        return await _context.Goals.OrderByDescending(g => g.CreatedAt).ToListAsync();
+        return await _context.Goals.Where(g => g.AuthorId == authorId).ToListAsync();
     }
 
     public async Task AddGoalAsync(Goal goal)

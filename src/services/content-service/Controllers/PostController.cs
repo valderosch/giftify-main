@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace content_service.Controllers;
 
 [ApiController]
-[Route("api/posts")]
+[Route("content/[action]")]
 public class PostController : ControllerBase
 {
     private readonly PostService _postService;
