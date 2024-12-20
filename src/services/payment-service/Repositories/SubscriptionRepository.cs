@@ -15,6 +15,7 @@ public class SubscriptionRepository : ISubscriptionRepository
 
     public async Task AddAsync(Subscription subscription)
     {
+        subscription.Status ??= "Active";
         await _context.Subscriptions.AddAsync(subscription);
         await _context.SaveChangesAsync();
     }

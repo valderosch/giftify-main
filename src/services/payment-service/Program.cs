@@ -20,6 +20,8 @@ builder.Services.AddScoped<IBalanceRepository, BalanceRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 
+
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // builder.Services.AddAutoMapper(typeof(MappingProfile));
 

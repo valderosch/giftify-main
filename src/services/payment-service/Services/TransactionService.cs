@@ -37,10 +37,27 @@ public class TransactionService : ITransactionService
         transaction.CreatedAt = DateTime.UtcNow;
 
         await _transactionRepository.AddAsync(transaction);
-
+        
         _ = SendEmailAsync(dto.UserId, transaction);
 
         return (true, null, _mapper.Map<TransactionDto>(transaction));
+    }
+
+    public async Task<TransactionDto> GetTransactionByIdAsync(Guid id)
+    {
+        var transaction = await _transactionRepository.GetByIdAsync(id);
+        return _mapper.Map<TransactionDto>(transaction);
+    }
+
+    public async Task<IEnumerable<TransactionDto>> GetTransactionsByUserIdAsync(Guid userId)
+    {
+        var transactions = await _transactionRepository.GetByUserIdAsync(userId);
+        return transactions.Select(t => _mapper.Map<TransactionDto>(t));
+    }
+
+    public async Task<bool> DeleteTransactionAsync(Guid id)
+    {
+        return await _transactionRepository.DeleteAsync(id);
     }
 
     private async Task SendEmailAsync(Guid userId, Transaction transaction)
@@ -86,24 +103,6 @@ public class TransactionService : ITransactionService
         {
             _logger.LogError(ex, $"Exception occurred while sending email for TransactionId: {transaction.Id}");
         }
-
-    }
-
-    public async Task<TransactionDto> GetTransactionByIdAsync(Guid id)
-    {
-        var transaction = await _transactionRepository.GetByIdAsync(id);
-        return _mapper.Map<TransactionDto>(transaction);
-    }
-
-    public async Task<IEnumerable<TransactionDto>> GetTransactionsByUserIdAsync(Guid userId)
-    {
-        var transactions = await _transactionRepository.GetByUserIdAsync(userId);
-        return transactions.Select(t => _mapper.Map<TransactionDto>(t));
-    }
-
-    public async Task<bool> DeleteTransactionAsync(Guid id)
-    {
-        return await _transactionRepository.DeleteAsync(id);
     }
 }
 

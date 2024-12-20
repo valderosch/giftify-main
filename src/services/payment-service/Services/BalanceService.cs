@@ -22,10 +22,10 @@ public class BalanceService : IBalanceService
         return (false, "Balance not found for the specified user.", 0);
     }
 
-    public async Task<(bool IsSuccess, string ErrorMessage, string Message)> TopUpBalanceAsync(TopUpBalanceDto dto)
+    public async Task<(bool IsSuccess, string ErrorMessage, decimal Balance)> TopUpBalanceAsync(TopUpBalanceDto dto)
     {
         if (dto.Amount <= 0)
-            return (false, "Amount must be greater than zero.", null);
+            return (false, "Amount must be greater than zero.", 0);
 
         var balance = await _balanceRepository.GetBalanceByUserIdAsync(dto.UserId);
 
@@ -40,21 +40,21 @@ public class BalanceService : IBalanceService
             await _balanceRepository.UpdateAsync(balance);
         }
 
-        return (true, null, $"Balance topped up by {dto.Amount:C}.");
+        return (true, null, balance.Amount);
     }
 
-    public async Task<(bool IsSuccess, string ErrorMessage, string Message)> WithdrawBalanceAsync(WithdrawBalanceDto dto)
+    public async Task<(bool IsSuccess, string ErrorMessage, decimal Balance)> WithdrawBalanceAsync(WithdrawBalanceDto dto)
     {
         if (dto.Amount <= 0)
-            return (false, "Amount must be greater than zero.", null);
+            return (false, "Amount must be greater than zero.", 0);
 
         var balance = await _balanceRepository.GetBalanceByUserIdAsync(dto.UserId);
         if (balance == null || balance.Amount < dto.Amount)
-            return (false, "Insufficient balance.", null);
+            return (false, "Insufficient balance.", 0);
 
         balance.Amount -= dto.Amount;
         await _balanceRepository.UpdateAsync(balance);
 
-        return (true, null, $"Balance withdrawn by {dto.Amount:C}.");
+        return (true, null, balance.Amount);
     }
 }
