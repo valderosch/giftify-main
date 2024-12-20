@@ -5,7 +5,7 @@ using payment_service.Interfaces;
 namespace payment_service.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("payment/[action]")]
 public class BalanceController : ControllerBase
 {
     private readonly IBalanceService _balanceService;
@@ -30,7 +30,7 @@ public class BalanceController : ControllerBase
     {
         var result = await _balanceService.TopUpBalanceAsync(dto);
         if (result.IsSuccess)
-            return Ok(result.Message);
+            return Ok(result.Balance);
 
         return BadRequest(result.ErrorMessage);
     }
@@ -40,7 +40,7 @@ public class BalanceController : ControllerBase
     {
         var result = await _balanceService.WithdrawBalanceAsync(dto);
         if (result.IsSuccess)
-            return Ok(result.Message);
+            return Ok(result.Balance);
 
         return BadRequest(result.ErrorMessage);
     }

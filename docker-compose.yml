@@ -1,0 +1,44 @@
+﻿services:
+  api-gateway:
+    image: api-gateway
+    build:
+      context: .
+      dockerfile: src/api-gateway/Dockerfile
+
+  identity-service:
+    image: identity-service
+    build:
+      context: .
+      dockerfile: src/services/identity-service/Dockerfile
+
+  content-service:
+    image: content-service
+    build:
+      context: .
+      dockerfile: src/services/content-service/Dockerfile
+
+  payment-service:
+    image: payment-service
+    build:
+      context: .
+      dockerfile: src/services/payment-service/Dockerfile
+
+  mail-service:
+    image: mail-service
+    build:
+      context: .
+      dockerfile: src/services/mail-service/Dockerfile
+      
+  social-service:
+    image: social-service
+    build:
+      context: .
+      dockerfile: src/services/social-service/Dockerfile    
+
+  chat-service:
+    image: chat-service
+    build:
+      context: .
+      dockerfile: src/services/chat-service/Dockerfile
+    ports:
+      - "5000:5000"
